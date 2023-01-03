@@ -1,161 +1,182 @@
-<?php
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
-include_once("db\connection.php");
 
-$con = connection();
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #fafafa;
+}
 
-?>
 
-<!DOCTYPE html>
-<html>
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+#sidebar {
+    min-width: 200px;
+    max-width: 200px;
+    min-height: 100vh;
+}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+#sidebar.active {
+    margin-left: -250px;
+}
 
-    <title>C3 vs Camstar Insertion Comparison Web View</title>
-a
-    <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-</head>
+a[data-toggle="collapse"] {
+    position: relative;
+}
 
-<body>
-<div class="wrapper">
-    <!-- Sidebar -->
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
 
-    <nav id="sidebar">
-        <div class="sidebar-header p-0">
-            <a href="index.php">
-                <img src="img\analog_logo - Copy.svg" class="img-fluid dashboard-logo p-0"   alt="">
-            </a>
-        </div>
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -250px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+}
 
-        <ul class="sidebar-ul">
-          <li style="list-style-type: none;">
-              <a href="index.php">
-                  <i class="fas fa-home"></i><span> Home </span>
-              </a>
-          </li>
-          <li style="list-style-type: none;">
-                <a href="analytics.php">
-                    <i class="fas fa-chart-line"></i><span> Analytics </span>
-                </a>
-          </li>
-        </ul>
-    </nav>
+p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.7em;
+    color: #999;
+}
 
-    <div class="container-fluid p-0 m-0 mr-0 table-hover">
-        <div class="container-fluid card shadow-sm col-sm-12 col-lg-12 m-0 border-0 p-3">
-            <span class="project__title"> C3 VS CAMSTAR INSERTION COMPARISON WEB VIEW </span>
-        </div>
+a, a:hover, a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
 
-        <div class="container mt-4 ml-5 mr-0 handlerForm">
-            <?php
-                
-                if (isset($_POST['submit'])){
-                    $searchKey = $_POST['submit'];
-                    $search = "SELECT * FROM camstar_sample_data INNER JOIN c3_sample_data ON camstar_sample_data.HANDLER_ID = c3_sample_data.HANDLER_ID GROUP BY camstar_sample_data.HANDLER_ID LIKE %searchKey%";
-                }else{
-                  $search = "SELECT * FROM camstar_sample_data INNER JOIN c3_sample_data ON camstar_sample_data.HANDLER_ID = c3_sample_data.HANDLER_ID GROUP BY camstar_sample_data.HANDLER_ID";
-                  $searchKey = "";
-                }
-                  $search_result = mysqli_query($con, $search);  
-            
-            ?> 
+#sidebar {
+    background: #003264;;
+    color: #fff;
+    transition: all 0.3s;
+}
 
-            <form action="" method="post" class="row form-item">
-                <select class="form-select col-2" name="search">
-                    <option selected> Handler Type</option>
-                    <option value="handlers">All </option>
-                    <option value="handler 1">DELD8000 </option>
-                    <option value="handler 2">DELD8880 </option>
-                    <option value="handler 3">HT9046 </option>
-                    <option value="handler 4">HT9046MX </option>
-                    <option value="handler 5">RAS1000</option>
-                    <option value="handler 6">RAS2000</option>
-                    <option value="handler 7">MT9510</option>
-                </select>  
-                <div class="col-3">
-                    <label class="inline__label" type="text">From</label>
-                    <span class="inline_span">
-                        <input type="text" class="form-control" value="yyyy-mm-dd">
-                    </span>
-                </div>
-                <div class="col-3">
-                    <label class="inline__label" type="text">To</label>
-                    <span class="inline_span">
-                        <input type="text" class="form-control" value="yyyy-mm-dd">
-                    </span>
-                </div>
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #003264;
+}
 
-                <buttton onclick="myFunction()" class="btn btn-search" type="submit">
-                            Search <i class="fa-solid fa-magnifying-glass"></i>
-                    </buttton>
-            <div>              
-            </form>
-        </div>
-    </div>
-                
-    <div class="table-responsive mt-4 m-0 p-0">
-        <table class="table table-bordered container-fluid">
-            <thead>
-                <tr>
-                    <th scope="col" colspan="2" class="text-center cell"> HANDLER TYPE:</th>
-                    <td scope="col" class="text-center cell"> </th>
-                    <th scope="col" colspan="2" class="text-center cell">TRANSWW:</th>
-                    <td scope="col" class="text-center cell"></th>
-                </tr>
-            </thead>
-            <thead>
-                <tr>
-                    <th scope="col" class="text-center cell">HANDLER ID</th>
-                    <th scope="col" class="text-center cell">DATE</th>
-                    <th scope="col" class="text-center cell">CAMSTAR</th>
-                    <th scope="col" class="text-center cell">C3</th>
-                    <th scope="col" class="text-center cell">DIFFERENCE</th>
-                    <th scope="col" class="text-center cell">PERCENTAGE</th>
-                </tr>
-            </thead>
+
+
+#sidebar ul p {
+    color: #003264;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+
+
+.btn-toggle{
+    border-radius: 20px;
+    background: #003264;
+    color: #fff;
+}
+.btn-toggle:hover{
+    border: 2px solid #003264;
+    border-radius: 20px;
+    background: #fff;
+    color: #003264;
+}
+
+.sidebar-ul{
+    margin-top: -40px;
+}
+.dashboard-logo {
+    background: transparent;
+    border-color: transparent;
+    margin-top: -40px;
+    margin-left: 15px;
+    width: 180px;
+    height: 170px;
+}
+
+.project__title{
+    font-size: 25px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.table-responsive{
+    display: flex;
+    background: #ffff;
+    padding-left: 230px;
+    padding-top: 70px;
+    position: static;
+    box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+.text-center{
+    width: 25px;
+}
+
+.cell{
+    width: 80px;
+}
+
+.form-select{
+    display: table-cell;
+    padding: 0 4px 0 6px;
+    border-radius: 8px;
+    width: 1px;
+    white-space: nowrap;
+}
+.btn-generate{
+    color: #fff;
+    border: 2px solid;
+    border-radius: 8px;
+    background: #003264;
+    float: right;
+}
+.btn-generate:hover{
+    color: #003264;
+    border-radius: 8px;
+    background: #fff;
+    border: 2px solid #003264;
+}
+.btn-search{
+    color: #fff;
+    border: 2px solid;
+    border-radius: 8px;
+    background: #003264;
+}
+.btn-search:hover{
+    color: #003264;
+    border-radius: 8px;
+    background: #fff;
+    border: 2px solid #003264;
     
-            <tbody>
-                <?php
-                    while($row = mysqli_fetch_object($search_result)){
-                        $handlerID = $row->HANDLER_ID;
-                        
-                        $reportDate = $row->DATETIME_EVENT;
-                        $bin_cs = $row->BIN_TOTALTESTED_CS;
-                        $bin_c3 = $row->BIN_TOTALTESTED_C3;
-                        $difference = $bin_cs - $bin_c3;
-                        $percentage = round(($difference/ $bin_c3 )*100,1);
-                        
-                ?>
-                <tr>
-                    <td class="text-center cell"><?php echo ($handlerID)?></td>
-                    <td class="text-center cell"><?php echo($reportDate) ?></td> 
-                    <td class="text-center cell"><?php echo ($bin_cs) ?></td>
-                    <td class="text-center cell"><?php echo($bin_c3)?></td>
-                    <td class="text-center cell"><?php echo ($difference)?></td> 
-                    <td class="text-center cell text-white"><span class="badge rounded-pill bg-success"> <?php echo $percentage . "%" ?> </span> </td> 
-                </tr>
+}
+.inline__label{
+    display: table-cell;
+    width: 1px;
+    white-space: nowrap;
+}
+.inline_span{
+    display: table-cell;
+    padding: 0 4px 0 6px;
+}
 
-                <?php
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
-
-    <div>
-        <button class="btn btn-generate shadow-none mx-5 mt-3" type="button">
-            <i class="fa-solid fa-download"></i>
-                <a href="exportfile.php"> Export </a>
-        </button>  
-    </div>             
-</div>
-</body>
-</html>
+.badge.bg-success{
+    font-size: 12px;
+    width: 60px;
+    font-family: 'Poppins', sans-serif
+}
